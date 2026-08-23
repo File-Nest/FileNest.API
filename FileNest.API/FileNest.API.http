@@ -1,0 +1,6 @@
+@FileNest.API_HostAddress = http://localhost:5157
+
+GET {{FileNest.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
