@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="FileNest.API/FileNest.Web.csproj" />
-  <Project Path="FileNest.Data/FileNest.Data.csproj" />
-  <Project Path="FileNest.Model/FileNest.Model.csproj" />
-  <Project Path="FileNest.Service/FileNest.Service.csproj" />
+  <Project Path="Src/FileNest.API/FileNest.Web.csproj" />
+  <Project Path="Src/FileNest.Data/FileNest.Data.csproj" />
+  <Project Path="Src/FileNest.Model/FileNest.Model.csproj" />
+  <Project Path="Src/FileNest.Service/FileNest.Service.csproj" />
 </Solution>
