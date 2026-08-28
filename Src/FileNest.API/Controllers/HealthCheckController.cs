@@ -6,6 +6,9 @@ namespace FileNest.Web.Controllers
     [Route("health")]
     public class HealthCheckController : ControllerBase
     {
+        public HealthCheckController()
+        {
+        }
         [HttpGet]
         public IActionResult Get()
         {
@@ -14,5 +17,6 @@ namespace FileNest.Web.Controllers
                 status = "API Working..."
             });
         }
+
     }
 }

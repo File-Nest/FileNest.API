@@ -1,7 +1,11 @@
-﻿namespace FileNest.API.Configuration
+﻿
+
+using MongoDB.Driver;
+
+namespace FileNest.API.Configuration
 {
     public class DatabaseSettings
     {
-        public Dictionary<string, string> Connections { get; set; } = new();
+        public Dictionary<string, DatabaseConnections> Databases { get; set; } = new();
     }
 }
