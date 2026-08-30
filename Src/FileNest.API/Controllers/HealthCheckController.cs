@@ -3,7 +3,7 @@
 namespace FileNest.Web.Controllers
 {
     [ApiController]
-    [Route("health")]
+    [Route("Health")]
     public class HealthCheckController : ControllerBase
     {
         public HealthCheckController()

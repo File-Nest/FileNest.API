@@ -1,8 +1,6 @@
-﻿
+﻿using MongoDB.Driver;
 
-using MongoDB.Driver;
-
-namespace FileNest.API.Configuration
+namespace FileNest.Service.Configuration
 {
     public class DatabaseSettings
     {
