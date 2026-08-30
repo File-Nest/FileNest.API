@@ -1,7 +1,7 @@
-using FileNest.Service.Configuration;
 using FileNest.API.Exceptions;
+using FileNest.Service.Configuration;
+using FileNest.Service;
 using MongoDB.Driver;
-using FileNest.Service.Service;
 
 namespace FileNest.API
 {
@@ -41,6 +41,7 @@ namespace FileNest.API
                 return new MongoClient(connectionString);
             });
             builder.Services.AddScoped<MongoDbService>();
+            builder.Services.AddSingleton<UserService>();
 
 
             var app = builder.Build();
@@ -49,7 +50,7 @@ namespace FileNest.API
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsProduction() ||
-                app.Environment.IsStaging() || app.Environment.IsDevelopment())
+                app.Environment.IsStaging())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

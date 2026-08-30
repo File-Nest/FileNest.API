@@ -9,7 +9,7 @@ namespace FileNest.Service.Configuration
         {
             _databaseSettings = options.Value;
         }
-        public DatabaseConnections GetDatabaseName(string databaseName)
+        public DatabaseConnections GetDatabaseConfiguration(string databaseName)
         {
             if (!_databaseSettings.Databases.TryGetValue(databaseName,out var database))
             {
@@ -20,7 +20,7 @@ namespace FileNest.Service.Configuration
         }
         public string GetConnectionString(string databaseName)
         {
-            return GetDatabaseName(databaseName).ConnectionString;
+            return GetDatabaseConfiguration(databaseName).ConnectionString;
         }
     }
 }

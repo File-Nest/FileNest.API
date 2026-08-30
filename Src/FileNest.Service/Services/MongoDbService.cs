@@ -3,7 +3,7 @@ using FileNest.Service.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-namespace FileNest.Service.Service
+namespace FileNest.Service
 {
     public class MongoDbService
     {
@@ -14,7 +14,7 @@ namespace FileNest.Service.Service
         {
             _mongoClient = mongoClient;
             _connectionProvider = connectionProvider;
-            var databaseSettings = connectionProvider.GetDatabaseName("MongoDB");
+            var databaseSettings = connectionProvider.GetDatabaseConfiguration("MongoDB");
             _database = _mongoClient.GetDatabase(databaseSettings.DatabaseName);
         }
         // Check MongoDB connection
@@ -29,12 +29,6 @@ namespace FileNest.Service.Service
             {
                 return false;
             }
-        }
-        // Insert User
-        public async Task CreateUserAsync(UserClass user)
-        {
-            var users = _database.GetCollection<UserClass>("Users");
-            await users.InsertOneAsync(user);
         }
     }
 }
