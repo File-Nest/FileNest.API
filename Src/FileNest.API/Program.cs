@@ -1,3 +1,7 @@
+using FileNest.API.Exceptions;
+using FileNest.Service.Configuration;
+using FileNest.Service;
+using MongoDB.Driver;
 
 namespace FileNest.API
 {
@@ -10,14 +14,43 @@ namespace FileNest.API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Configure database settings
+            builder.Services.Configure<DatabaseSettings>(
+                builder.Configuration.GetSection("DatabaseSettings"));
+
+            // Database connection provider
+            builder.Services.AddSingleton<DatabaseConnectionProvider>();
+
+            // Exception handling
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
+
+            // MongoDB client
+            builder.Services.AddSingleton<IMongoClient>(sp =>
+            {
+                var provider =
+                    sp.GetRequiredService<DatabaseConnectionProvider>();
+
+                var connectionString =
+                    provider.GetConnectionString("MongoDB");
+
+                return new MongoClient(connectionString);
+            });
+            builder.Services.AddScoped<MongoDbService>();
+            builder.Services.AddSingleton<UserService>();
+
+
             var app = builder.Build();
 
+            app.UseExceptionHandler();
+
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsProduction() || app.Environment.IsStaging())
+            if (app.Environment.IsProduction() ||
+                app.Environment.IsStaging())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -26,7 +59,6 @@ namespace FileNest.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
