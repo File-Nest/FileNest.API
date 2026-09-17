@@ -3,7 +3,6 @@ using FileNest.Service;
 using FileNest.Service.Configuration;
 using FileNest.Web.Mappings;
 using MongoDB.Driver;
-using FileNest.Web.Mappings;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -62,7 +61,7 @@ namespace FileNest.API
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsProduction() ||
-                app.Environment.IsStaging() || app.Environment.IsDevelopment())
+                app.Environment.IsStaging())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
