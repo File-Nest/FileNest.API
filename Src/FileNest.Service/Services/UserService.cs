@@ -18,6 +18,7 @@ namespace FileNest.Service
         }
         public async Task CreateUserAsync(UserClass user)
         {
+            user.Id = Guid.NewGuid();
             await _users.InsertOneAsync(user);
         }
         public async Task<List<UserClass>> GetUsersAsync()

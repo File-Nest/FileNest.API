@@ -1,5 +1,7 @@
-﻿using FileNest.Model.Models;
+﻿using AutoMapper;
+using FileNest.Model.Models;
 using FileNest.Service;
+using FileNest.Web.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileNest.Web.Controllers
@@ -10,21 +12,19 @@ namespace FileNest.Web.Controllers
     {
         private readonly MongoDbService _mongoDbService;
         private readonly UserService _userService;
-        public UserController(MongoDbService mongoDbService, UserService userService)
+        private readonly IMapper _mapper;
+        public UserController(MongoDbService mongoDbService, UserService userService, IMapper mapper)
         {
             _mongoDbService = mongoDbService;
             _userService = userService;
+            _mapper = mapper;
         }
-        [HttpGet]
-        public async Task<IActionResult> Test()
-        {
-            await _mongoDbService.TestConnectionAsync();
-            return Ok("MongoDB connection successful.");
-        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateUser(UserClass user)
+        public async Task<IActionResult> CreateUser(AddUserRequestDTO user)
         {
-            await _userService.CreateUserAsync(user);
+            var userDomainModel = _mapper.Map<UserClass>(user);
+            await _userService.CreateUserAsync(userDomainModel);
             return Ok(new { message = "User created successfully." });
         }
         [HttpGet("users")]

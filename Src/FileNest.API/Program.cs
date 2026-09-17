@@ -1,7 +1,12 @@
 using FileNest.API.Exceptions;
-using FileNest.Service.Configuration;
 using FileNest.Service;
+using FileNest.Service.Configuration;
+using FileNest.Web.Mappings;
 using MongoDB.Driver;
+using FileNest.Web.Mappings;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace FileNest.API
 {
@@ -40,6 +45,13 @@ namespace FileNest.API
 
                 return new MongoClient(connectionString);
             });
+
+
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.LicenseKey = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxODIwMzYxNjAwIiwiaWF0IjoiMTc4ODgzNjk4MyIsImFjY291bnRfaWQiOiIwMWEwN2VmZDg1Y2Y3MWZmYWIxZjg1MDNjYzBlY2U1MCIsImN1c3RvbWVyX2lkIjoiMDFhMDdlZmQ4NWNmNzFmZmFiMWY4NTAzY2MwZWNlNTAiLCJzdWJfaWQiOiItIiwiZWRpdGlvbiI6IjAiLCJ0eXBlIjoiMiJ9.C39qOqscKM_eEnAKCgc0GQYSc7qv-P26UzAGYAKuMlwfDjho0ZgnKP7q3Lwvn7jmjrB7fFF9wkpli_fk7eAgTWnBp3v1WxoidMdQmm_uZggTsaCNa5bc3PCFY_BF6KoUPc7CF7hvGMOZaJRxebmkuXohObR6qO9J0PSiTe7Gj6KsPJ4L0KXPCbGHXG2zV8WW721zS0paV5JkST7-PhfAhwelK3xRHoiYbqddNP6ZP5AOIRxovPWfAQNAhYd7UyewM3zkTgMgrjpneHyZU7p_GDZox0Bne2hWQp-YyFQ_XlnUs58um7gCsFOHfpyqmEa-t5cVhQHIHnswIZYjN5EcAA";
+            }, typeof(Program));
             builder.Services.AddScoped<MongoDbService>();
             builder.Services.AddSingleton<UserService>();
 
@@ -50,7 +62,7 @@ namespace FileNest.API
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsProduction() ||
-                app.Environment.IsStaging())
+                app.Environment.IsStaging() || app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
