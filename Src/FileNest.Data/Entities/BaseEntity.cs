@@ -8,7 +8,6 @@ namespace FileNest.Data.Entities
     {
         [BsonId]
         [JsonIgnore]
-
         public ObjectId Id { get; set; }
     }
 }
