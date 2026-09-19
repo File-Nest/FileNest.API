@@ -1,7 +1,10 @@
 using FileNest.API.Exceptions;
-using FileNest.Service.Configuration;
 using FileNest.Service;
+using FileNest.Service.Configuration;
 using MongoDB.Driver;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace FileNest.API
 {
@@ -12,9 +15,7 @@ namespace FileNest.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -34,18 +35,14 @@ namespace FileNest.API
             {
                 var provider =
                     sp.GetRequiredService<DatabaseConnectionProvider>();
-
                 var connectionString =
                     provider.GetConnectionString("MongoDB");
-
                 return new MongoClient(connectionString);
             });
-            builder.Services.AddScoped<MongoDbService>();
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            builder.Services.AddSingleton<MongoDbService>();
             builder.Services.AddSingleton<UserService>();
-
-
             var app = builder.Build();
-
             app.UseExceptionHandler();
 
             // Configure the HTTP request pipeline.
