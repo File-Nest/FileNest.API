@@ -15,9 +15,7 @@ namespace FileNest.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -37,21 +35,14 @@ namespace FileNest.API
             {
                 var provider =
                     sp.GetRequiredService<DatabaseConnectionProvider>();
-
                 var connectionString =
                     provider.GetConnectionString("MongoDB");
-
                 return new MongoClient(connectionString);
             });
-
-
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             builder.Services.AddSingleton<MongoDbService>();
             builder.Services.AddSingleton<UserService>();
-
-
             var app = builder.Build();
-
             app.UseExceptionHandler();
 
             // Configure the HTTP request pipeline.
