@@ -12,9 +12,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FileNest.Service\FileNest.Service.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FileNest.Service\FileNest.Service.csproj" />
+	</ItemGroup>
 
   <ItemGroup>
     <Folder Include="Exceptions\" />
