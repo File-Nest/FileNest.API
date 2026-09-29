@@ -1,5 +1,4 @@
-﻿using FileNest.Data.Entities;
-using FileNest.Model.Models;
+﻿using FileNest.Model.Models;
 using FileNest.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +13,6 @@ namespace FileNest.Web.Controllers
         {
             _userService = userService;
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserRequestModel user)
         {

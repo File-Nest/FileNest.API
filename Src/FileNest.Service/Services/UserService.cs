@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FileNest.Data.Entities;
+﻿using FileNest.Data.Entities;
 using FileNest.Model.Models;
+using FileNest.Model.Models.Constants;
+using FileNest.Service.Configuration;
 using MongoDB.Driver;
 
 namespace FileNest.Service
@@ -12,10 +9,16 @@ namespace FileNest.Service
     public class UserService
     {
         private readonly IMongoCollection<User> _users;
-        public UserService(IMongoClient mongoClient)
+        private readonly IMongoDatabase _database;
+        private readonly IMongoClient _mongoClient;
+        private readonly DatabaseConnectionProvider _connectionProvider;
+        public UserService(IMongoClient mongoClient, DatabaseConnectionProvider connectionProvider)
         {
-            var database = mongoClient.GetDatabase("FileNest");
-            _users = database.GetCollection<User>("Users");
+            _mongoClient = mongoClient;
+            _connectionProvider = connectionProvider;
+            var settings = _connectionProvider.GetDatabaseConfiguration(DBConstants.DatabaseName);
+            _database = _mongoClient.GetDatabase(settings.DatabaseName);
+            _users = _database.GetCollection<User>(DBConstants.UserCollectionName);
         }
         public async Task CreateUserAsync(CreateUserRequestModel user)
         {
@@ -24,7 +27,6 @@ namespace FileNest.Service
                 Name = user.Name,
                 Email = user.Email
             };
-
             userModel.UserId = Guid.NewGuid();
             await _users.InsertOneAsync(userModel);
         }
