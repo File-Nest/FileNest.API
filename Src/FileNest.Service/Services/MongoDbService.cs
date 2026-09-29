@@ -14,7 +14,7 @@ namespace FileNest.Service
         {
             _mongoClient = mongoClient;
             _connectionProvider = connectionProvider;
-            var databaseSettings = connectionProvider.GetDatabaseConfiguration("MongoDB");
+            var databaseSettings = _connectionProvider.GetDatabaseConfiguration("MongoDB");
             _database = _mongoClient.GetDatabase(databaseSettings.DatabaseName);
         }
         // Check MongoDB connection
