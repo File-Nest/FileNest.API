@@ -1,5 +1,6 @@
 ﻿using FileNest.Data.Entities;
 using FileNest.Model.Models;
+using FileNest.Model.Models.Constants;
 using FileNest.Service.Configuration;
 using MongoDB.Driver;
 
@@ -15,9 +16,9 @@ namespace FileNest.Service
         {
             _mongoClient = mongoClient;
             _connectionProvider = connectionProvider;
-            var settings = _connectionProvider.GetDatabaseConfiguration("MongoDB");
+            var settings = _connectionProvider.GetDatabaseConfiguration(DBConstants.DatabaseName);
             _database = _mongoClient.GetDatabase(settings.DatabaseName);
-            _users = _database.GetCollection<User>("Users");
+            _users = _database.GetCollection<User>(DBConstants.UserCollectionName);
         }
         public async Task CreateUserAsync(CreateUserRequestModel user)
         {
