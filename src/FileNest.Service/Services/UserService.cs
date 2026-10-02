@@ -38,7 +38,7 @@ namespace FileNest.Service
         }
             catch (MongoWriteException ex) when (ex.WriteError?.Code == 11000)
             {
-                throw new EmailAlreadyExistsException(user.Email);
+                throw new EmailAlreadyExistException(user.Email);
             }
         }
         public async Task<List<User>> GetUsersAsync()

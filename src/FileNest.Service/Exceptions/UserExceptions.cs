@@ -1,8 +1,8 @@
 ﻿namespace FileNest.Service.Exceptions
 {
-    public class EmailAlreadyExistsException : AppException
+    public class EmailAlreadyExistException : AppException
     {
-        public EmailAlreadyExistsException(string email)
+        public EmailAlreadyExistException(string email)
             : base($"A user with the email '{email}' already exists.",409)
         {
         }
