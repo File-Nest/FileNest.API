@@ -2,6 +2,7 @@
 using FileNest.Model.Models;
 using FileNest.Model.Models.Constants;
 using FileNest.Service.Configuration;
+using FileNest.Service.Exceptions;
 using MongoDB.Driver;
 
 namespace FileNest.Service
@@ -31,8 +32,14 @@ namespace FileNest.Service
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
             };
-            userModel.UserId = Guid.NewGuid();
-            await _users.InsertOneAsync(userModel);
+            try
+            {
+                await _users.InsertOneAsync(userModel);
+            }
+            catch (MongoWriteException ex) when (ex.WriteError?.Code == 11000)
+            {
+                throw new EmailAlreadyExistsException(user.Email);
+            }
         }
         public async Task<List<User>> GetUsersAsync()
         {
