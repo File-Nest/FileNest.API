@@ -34,8 +34,8 @@ namespace FileNest.Service
             };
             try
             {
-                await _users.InsertOneAsync(userModel);
-            }
+            await _users.InsertOneAsync(userModel);
+        }
             catch (MongoWriteException ex) when (ex.WriteError?.Code == 11000)
             {
                 throw new EmailAlreadyExistsException(user.Email);
