@@ -25,7 +25,11 @@ namespace FileNest.Service
             var userModel = new User
             {
                 Name = user.Name,
-                Email = user.Email
+                Email = user.Email,
+                UserId = Guid.NewGuid(),
+                EmailVerified = false,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
             userModel.UserId = Guid.NewGuid();
             await _users.InsertOneAsync(userModel);

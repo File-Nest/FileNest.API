@@ -17,8 +17,11 @@ namespace FileNest.API
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
+            //builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+            });
             // Configure database settings
             builder.Services.Configure<DatabaseSettings>(
                 builder.Configuration.GetSection("DatabaseSettings"));
@@ -47,7 +50,7 @@ namespace FileNest.API
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsProduction() ||
-                app.Environment.IsStaging())
+                app.Environment.IsStaging() || app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
