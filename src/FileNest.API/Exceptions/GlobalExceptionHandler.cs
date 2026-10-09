@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using FileNest.Service.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -11,11 +12,12 @@ namespace FileNest.API.Exceptions
         {
             _logger = logger;
         }
-        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,Exception exception,CancellationToken cancellationToken)
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception,"An exception occurred while processing the request.");
+            _logger.LogError(exception, "An exception occurred while processing the request.");
             var statusCode = exception switch
             {
+                UserExceptions userException => userException.StatusCode,
                 MongoAuthenticationException => StatusCodes.Status503ServiceUnavailable,
                 MongoConnectionException => StatusCodes.Status503ServiceUnavailable,
                 MongoWriteException => StatusCodes.Status409Conflict,
@@ -24,10 +26,14 @@ namespace FileNest.API.Exceptions
             };
             var response = new ProblemDetails
             {
-                Title = "An error occurred while processing your request."
+                Title = exception is UserExceptions    
+                    ? exception.Message
+                    : "An error occurred while processing your request.",
+
+                Status = statusCode
             };
             httpContext.Response.StatusCode = statusCode;
-            await httpContext.Response.WriteAsJsonAsync(response,cancellationToken);
+            await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
             return true;
         }
     }
