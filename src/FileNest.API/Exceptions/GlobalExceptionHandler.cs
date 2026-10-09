@@ -17,7 +17,7 @@ namespace FileNest.API.Exceptions
             _logger.LogError(exception, "An exception occurred while processing the request.");
             var statusCode = exception switch
             {
-                AppException appException => appException.StatusCode,
+                UserExceptions userException => userException.StatusCode,
                 MongoAuthenticationException => StatusCodes.Status503ServiceUnavailable,
                 MongoConnectionException => StatusCodes.Status503ServiceUnavailable,
                 MongoWriteException => StatusCodes.Status409Conflict,
@@ -26,13 +26,12 @@ namespace FileNest.API.Exceptions
             };
             var response = new ProblemDetails
             {
-                Title = exception is AppException
+                Title = exception is UserExceptions    
                     ? exception.Message
                     : "An error occurred while processing your request.",
 
                 Status = statusCode
             };
-            //response.Status = statusCode;
             httpContext.Response.StatusCode = statusCode;
             await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
             return true;
