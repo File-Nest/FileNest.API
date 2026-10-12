@@ -14,7 +14,10 @@ namespace FileNest.API.Exceptions
         }
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "An exception occurred while processing the request.");
+            _logger.LogError(
+                exception,
+                "An error occurred while processing your request: {ErrorMessage}",
+                exception.Message);
             var statusCode = exception switch
             {
                 UserExceptions userException => userException.StatusCode,
