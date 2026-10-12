@@ -47,7 +47,7 @@ namespace FileNest.API
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsProduction() ||
-                app.Environment.IsStaging())
+                app.Environment.IsStaging() || app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

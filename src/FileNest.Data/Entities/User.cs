@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FileNest.Data.Entities
 {
-    public class User : BaseEntity
+    public class User : AuditableEntity
     {
         public Guid UserId { get; set; }
         public string? ClerkUserId { get; set; }
@@ -16,8 +16,6 @@ namespace FileNest.Data.Entities
         [BsonRepresentation(BsonType.String)]
         public UserStatus Status { get; set; } = UserStatus.Active;
         public bool EmailVerified { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
         public DateTime? LastSeenAt { get; set; }
     }
 }
