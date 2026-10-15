@@ -41,9 +41,20 @@ namespace FileNest.Service
                 throw  UserExceptions.EmailAlreadyExists(user.Email);
             }
         }
-        public async Task<List<User>> GetUsersAsync()
+        public async Task<List<GetUserResponseModel>> GetUsersAsync()
         {
-            return await _users.Find(_ => true).ToListAsync();
+            var users = await _users.Find(_ => true).ToListAsync();
+            return users.Select(user => new GetUserResponseModel
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                Status = user.Status.ToString(),
+                EmailVerified = user.EmailVerified,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
+                LastSeenAt = user.LastSeenAt
+            }).ToList();
         }
     }
 }
