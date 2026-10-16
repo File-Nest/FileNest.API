@@ -2,12 +2,12 @@
 namespace FileNest.Model.Models
 {
     public class CreateUserRequestModel
-    {           
-        [Required]
+    {
+        [Required(ErrorMessage = "Name is required.")] 
         public string Name { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Please provide a valid email address.")]
         public string Email { get; set; }
     }
 }
